@@ -1,7 +1,5 @@
 import React, { useState,useReducer } from "react";
 import "./../styles/App.css";
-
-
 const states = [{
 	name : "Madhya Pradesh",
 	description:"Madhya Pradesh, a large state in central India, retains landmarks from eras throughout Indian history.",
@@ -140,13 +138,124 @@ const states = [{
 
 function App() 
 {
-	// Do not alter/remove main div
+	const [getState, setState] = useState("");
+	const [getCity, setCity] = useState("");
+	const [getLandmark, setLandmark] = useState("");
+  
+  
+	const [getStateIndex, setStateIndex] = useState(0);
+	const [getCityIndex, setCityIndex] = useState(0);
+	const [getLandmarkIndex, setLandmarkIndex] = useState(0);
+  
+	const [state_title, set_state_title] = useState("");
+	const [city_title, set_city_title] = useState("");
+	const [landmark_title, set_landmark_title] = useState("");
+  
+	const [state_des, set_state_des] = useState("");
+	const [city_des, set_city_des] = useState("");
+	const [landmark_des, set_landmark_des] = useState("");
+  
+	useEffect(() => {
+	  popStates();
+	  popCity(getStateIndex);
+	  popLandmark(getCityIndex, getStateIndex);
+	  chaneTitle();
+	  chaneDescription();
+  
+	}, [getStateIndex, getCityIndex,getLandmarkIndex]);
+  
+	function popStates(e) {
+	  const stateList = states.map((item, index) => {
+		return (
+		  <option value={index}>{item.name}</option>
+		)
+	  });
+	  setState(stateList);
+	 
+	}
+	
+	
+	function chaneTitle(){
+		const stateTitle = states[getStateIndex].name;
+		const cityTitle =  states[getStateIndex].city[getCityIndex].name;
+		const landmarkTitle = states[getStateIndex].city[getCityIndex].landmarks[getLandmarkIndex].name;
+		set_state_title(stateTitle);
+		set_city_title(cityTitle);
+		set_landmark_title(landmarkTitle);
+	}
+  
+	function chaneDescription(){
+	  const stateDes = states[getStateIndex].description;
+	  const cityDes =  states[getStateIndex].city[getCityIndex].description;
+	  const landmarkDes = states[getStateIndex].city[getCityIndex].landmarks[getLandmarkIndex].description;
+	  set_state_des(stateDes);
+	  set_city_des(cityDes);
+	  set_landmark_des(landmarkDes);
+  }
+  
+	const stateChanged = (e) => {
+	  const id = e.target.value;
+	  setStateIndex(id);
+	  setCityIndex(0);
+	  popCity(getStateIndex);
+	}
+  
+	const cityChanged = (e) => {
+	  const id = e.target.value;
+	  setCityIndex(id);
+	  setLandmarkIndex(0);
+	  popLandmark(getCityIndex, getStateIndex);
+	}
+	const landmarkChanged = (e) => {
+	  const id = e.target.value;
+	  setLandmarkIndex(id);
+	  chaneTitle();
+	  chaneDescription();
+	}
+	function popCity(StateIndex) {
+	  const cityList = states[StateIndex].city.map((item, index) => {
+		return (
+		  <option value={index}>{item.name}</option>
+		)
+	  });
+	  setCity(cityList);
+	}
+  
+	function popLandmark(CityIndex, StateIndex) {
+	  const landmarkList = states[StateIndex].city[CityIndex].landmarks.map((item, index) => {
+		return (
+		  <option value={index}>{item.name}</option>
+		)
+	  });
+	  setLandmark(landmarkList);
+	}  
 	return (
 	<div id="main">
-		
+		States: <select id="state" onChange={stateChanged}>
+        {getState}
+      </select>
+
+     Cities: <select id="city" onChange={cityChanged} >
+        {getCity}
+      </select>
+     Towns: <select id="landmark" onChange={landmarkChanged}>
+        {getLandmark}
+      </select>
+
+      <div id="state-name">
+        <div id="state-title">{state_title}</div>
+        <div id="state-description">{state_des}</div>
+      </div>
+      <div id="city-name">
+        <div id="city-title">{city_title}</div>
+        <div id="city-description">{city_des}</div>
+      </div>
+      <div id="landmark-name">
+        <div id="landmark-title">{landmark_title}</div>
+        <div id="landmark-description">{landmark_des}</div>
+      </div>
+
 	</div>
 	);
 }
-
-
 export default App;
