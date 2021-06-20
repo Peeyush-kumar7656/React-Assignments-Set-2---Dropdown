@@ -1,4 +1,4 @@
-import React, { useState,useReducer } from "react";
+import React, { useState,useReducer,useEffect} from "react";
 import "./../styles/App.css";
 const states = [{
 	name : "Madhya Pradesh",
@@ -171,10 +171,7 @@ function App()
 		)
 	  });
 	  setState(stateList);
-	 
 	}
-	
-	
 	function chaneTitle(){
 		const stateTitle = states[getStateIndex].name;
 		const cityTitle =  states[getStateIndex].city[getCityIndex].name;
@@ -246,15 +243,17 @@ function App()
         <div id="state-title">{state_title}</div>
         <div id="state-description">{state_des}</div>
       </div>
+
       <div id="city-name">
         <div id="city-title">{city_title}</div>
         <div id="city-description">{city_des}</div>
       </div>
+
       <div id="landmark-name">
         <div id="landmark-title">{landmark_title}</div>
         <div id="landmark-description">{landmark_des}</div>
       </div>
-
+	  
 	</div>
 	);
 }
